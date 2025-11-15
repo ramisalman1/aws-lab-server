@@ -12,10 +12,10 @@ const HOST = process.env.HOST || "localhost";
 
 // CORS Configuration
 const corsOptions = {
-  origin: process.env.CORS_ORIGIN || "http://localhost:3000",
-  credentials: true,
+  origin: "*", // allow all origins
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-  headers: ["Content-Type", "Authorization"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+  credentials: false, // must be false when origin = "*"
 };
 
 // Middleware
