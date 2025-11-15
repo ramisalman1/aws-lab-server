@@ -1,18 +1,17 @@
-// controllers/Todo.js
-const todoDb = require("../database/db");
+const db = require("../database/db");
 
-const getTodo = async (req, res) => {
+const getTodo = async (req, res): Promise<void> => {
   try {
-    const todos = await todoDb.getTodoDb();
+    const todos: { id: String; newitem: string }[] = await db.getTodoDb();
 
-    if (todos.length === 0) {
+    if (todos.length == 0) {
       return res
         .status(404)
         .json({ success: false, message: "No todos found" });
     }
 
     res.status(200).json({ success: true, message: todos });
-  } catch (error) {
+  } catch (error: any) {
     return res.status(500).json({ success: false, message: error.message });
   }
 };
@@ -20,7 +19,7 @@ const getTodo = async (req, res) => {
 const addTodo = async (req, res) => {
   try {
     const { newItem } = req.body;
-    const todo = await todoDb.addTodoDb(newItem);
+    const todo: { id: String; newitem: string }[] = await db.addTodoDb(newItem);
 
     if (!todo) {
       return res
@@ -29,16 +28,16 @@ const addTodo = async (req, res) => {
     }
 
     res.status(201).json({ success: true, message: todo });
-  } catch (error) {
+  } catch (error: any) {
     return res.status(500).json({ success: false, message: error.message });
   }
 };
 
-const clearTodo = async (req, res) => {
+const clearTodo = async (req, res): Promise<void> => {
   try {
-    await todoDb.clearTodoDb();
+    await db.clearTodoDb();
     res.status(200).json({ success: true, message: "Todos deleted" });
-  } catch (error) {
+  } catch (error: any) {
     return res.status(500).json({ success: false, message: error.message });
   }
 };
