@@ -1,12 +1,25 @@
+// CORS Configuration for Backend (server.js)
+// Add this to your Express server to handle CORS
+
 require("dotenv").config();
 const express = require("express");
+const cors = require("cors");
 const todoRoutes = require("./routes/todoRoutes");
 
 const app = express();
 const PORT = process.env.PORT || 5000;
 const HOST = process.env.HOST || "localhost";
 
+// CORS Configuration
+const corsOptions = {
+  origin: process.env.CORS_ORIGIN || "http://localhost:3000",
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  headers: ["Content-Type", "Authorization"],
+};
+
 // Middleware
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -31,5 +44,6 @@ app.use((err, req, res, next) => {
 
 app.listen(PORT, HOST, () => {
   console.log(`Server running on http://${HOST}:${PORT}`);
+  console.log(`CORS enabled for: ${corsOptions.origin}`);
   console.log(`Environment: ${process.env.NODE_ENV}`);
 });
